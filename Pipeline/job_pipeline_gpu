@@ -1,0 +1,29 @@
+#!/bin/bash
+ 
+# Request gpu nodes
+#SBATCH --ntasks=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --gres=gpu:1
+#SBATCH --mem-per-cpu=156G
+
+#SBATCH --job-name=example_gpu_job
+#SBATCH --time=1:00:00
+#SBATCH --output=/home/lect0094/group3/pipeline_output/logs/workflow_SCVI_Thymus_0.001.log
+#SBATCH --account=lect0094
+
+#SBATCH --mail-user=claudia.valentin@rwth-aachen.de
+#SBATCH --mail-type=END,FAIL
+
+source ~/miniconda3/bin/activate
+conda activate /home/fh456457/miniconda3/envs/bioinfolab
+
+module load Python/3.9.6
+module load CUDA/11.8
+module load cuDNN/8.6.0
+
+pip install --user tensorflow pandas scikit-learn
+pip install --user matplotlib tensorrt numba
+pip uninstall --user scvi
+pip install --user scvi-tools
+
+python scripts/workflow.py --data_path /work/lect0094/RNA/h5ad/Thymus.h5ad --imputation SCVI --dataset_name Thymus --resolution 0.001

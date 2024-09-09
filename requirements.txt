@@ -1,0 +1,8 @@
+scanpy
+magic-impute
+numpy
+pandas
+matplotlib
+scikit-learn
+deepimpute
+scvi-tools
